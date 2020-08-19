@@ -1,6 +1,7 @@
-import {Component, ElementRef, OnInit, ViewChild, EventEmitter, Output} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {Ingredient} from '../../shared/ingredient.model';
 import {LoggingService} from '../../services/logging.service';
+import {ShoppingListService} from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -11,28 +12,27 @@ import {LoggingService} from '../../services/logging.service';
 export class ShoppingEditComponent implements OnInit {
   @ViewChild('nameInput') nameInputRef: ElementRef;
   @ViewChild('amountInput') amountInputRef: ElementRef;
-  @Output() ingredientAdded = new EventEmitter<Ingredient>();
 
-  constructor(private loggingService: LoggingService) { }
+  constructor(private loggingService: LoggingService, private shoppingListService: ShoppingListService) { }
 
   ngOnInit(): void {
   }
 
-  onAddItem() {
+  onAddItem(): void {
     const ingName = this.nameInputRef.nativeElement.value;
     const ingAmount = this.amountInputRef.nativeElement.value;
     if (ingName !== '') {
-      if (ingAmount === '')
+      if (ingAmount === '' || ingAmount === 0)
       {
         const newIngredient = new Ingredient(ingName, 1);
-        this.ingredientAdded.emit(newIngredient);
+        this.shoppingListService.addIngredient(newIngredient);
         this.loggingService.logItemAdded(ingName, 1);
       }
       else
       {
       const newIngredient = new Ingredient(ingName, ingAmount);
-      this.ingredientAdded.emit(newIngredient);
-      this.loggingService.logItemAdded(ingName, ingAmount);
+        this.shoppingListService.addIngredient(newIngredient);
+        this.loggingService.logItemAdded(ingName, ingAmount);
       }
     }
     else { this.loggingService.logNoItemInputted(); }

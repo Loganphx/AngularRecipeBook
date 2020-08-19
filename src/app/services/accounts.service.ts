@@ -13,7 +13,7 @@ export class AccountsService {
 
   constructor() { }
 
-  addAccount(name: string, password: string) {
+  addAccount(name: string, password: string): void {
     this.accounts.push({name: name, password: password});
   }
 }

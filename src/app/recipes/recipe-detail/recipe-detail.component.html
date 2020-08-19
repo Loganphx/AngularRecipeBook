@@ -9,15 +9,15 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    <h1 class="bold-font" appBetterHighlight highlightColor="orange">{{recipe.name}}</h1>
+    <h1 class="bold-font" appBetterHighlight [highlightColor]="recipe.color">{{recipe.name}}</h1>
     <div class="btn-group" appDropdown>
 
       <button type="button" class="btn btn-primary dropdown-toggle" >
         Manage Recipe <span class="caret"></span>
       </button>
       <ul class="dropdown-menu">
-        <li><a href="#" appBetterHighlight>To Shopping List</a></li>
-        <li><a href="#" appBetterHighlight>Edit Recipe</a></li>
+        <li><a appBetterHighlight (click)="onAddToShoppingList()" style="cursor: pointer">To Shopping List</a></li>
+        <li><a [routerLink]="['edit']" style="cursor: pointer" appBetterHighlight>Edit Recipe</a></li>
         <li><a href="#" appBetterHighlight>Delete Recipe</a></li>
       </ul>
     </div>
@@ -30,6 +30,12 @@
 </div>
 <div class="row">
   <div class="col-xs-12">
-    Ingredient
+    <ul class="list-group">
+      <li class="list-group-item"
+          *ngFor="let ingredient of recipe.ingredients"
+          appBetterHighlight [highlightColor]="recipe.color">
+          {{ingredient.name}} - {{ingredient.amount}}
+      </li>
+    </ul>
   </div>
 </div>
